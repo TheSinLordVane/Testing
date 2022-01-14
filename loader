@@ -1,0 +1,13 @@
+local cloudyHubGamesList = {
+    [2888719930] = "Boxing Simulator 2",
+}
+
+for i,v in next, cloudyHubGamesList do
+    cloudyHubGamesList[i] = table.concat(v:split(' '), '_')
+end
+
+if cloudyHubGamesList[game.PlaceId] ~= nil then
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/AliceZurburg/CloudyHub/main/Games/" ..game.PlaceId, true))()
+else
+    return "Game not supported!"    
+end

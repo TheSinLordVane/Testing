@@ -2,7 +2,8 @@ local cloudyHubGamesList = {
     [2888719930] = "Boxing Simulator 2",
     [3956818381] = "Ninja Legends",
     [8160862936] = "Super Eater Simulator",
-    [7945091105] = "Boxing Simulator 3"
+    [7945091105] = "Boxing Simulator 3",
+    [7989049516] = "Anime Masters"
 }
 
 for i,v in next, cloudyHubGamesList do

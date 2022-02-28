@@ -1,0 +1,93 @@
+local marketplaceService = game:GetService("MarketplaceService")
+local GameName = "None"
+local isSuccessful, info = pcall(marketplaceService.GetProductInfo, marketplaceService, game.PlaceId)
+if isSuccessful then
+    GameName = ""..info.Name
+end
+local player = game.Players.LocalPlayer
+
+local Auto = false
+local AutoPrestige = false
+local AutoMagnet = false
+
+player.PlayerGui.GuiItemsGui.ChildAdded:Connect(function(ui)
+    if ui.Name == "Magnet" then
+        if AutoMagnet == true then
+            local Button = game:GetService("Players").LocalPlayer.PlayerGui.GuiItemsGui.Magnet
+            local events = {"MouseButton1Click"}
+            for _,v in pairs(events) do
+                for _,c in pairs(getconnections(Button[v])) do
+                    c:Fire()
+                end
+            end
+            ui:Destroy()
+        end
+    end
+end)
+
+function Upgrade(value)
+    if value == true then
+        Auto = true
+        repeat
+            local args = {
+                [1] = "BetterLuck",
+            }
+            
+            game:GetService("ReplicatedStorage").RemoteFunctions.BasicUpgrade:InvokeServer(unpack(args))
+            wait(1)
+        until Auto == false
+    elseif value == false then
+        Auto = false
+    end
+end
+
+function Prestige(value)
+    if value == true then
+        AutoPrestige = true
+        repeat
+            game:GetService("ReplicatedStorage").RemoteFunctions.Prestige:InvokeServer()
+            wait(1)
+        until AutoPrestige == false
+    elseif value == false then
+        AutoPrestige = false
+    end
+end
+
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/TheSinLordVane/Testing/main/UI"))()
+local venyx = library.new("Cloudy Hub - "..GameName, 5013109572)
+
+local themes = {
+    Background = Color3.fromRGB(24, 24, 24),
+    Glow = Color3.fromRGB(0, 0, 0),
+    Accent = Color3.fromRGB(10, 10, 10),
+    LightContrast = Color3.fromRGB(20, 20, 20),
+    DarkContrast = Color3.fromRGB(14, 14, 14),  
+    TextColor = Color3.fromRGB(255, 255, 255)
+    }
+
+local page = venyx:addPage("Farming", 5012544693)
+local section1 = page:addSection("Farming")
+
+player:GetMouse().KeyDown:Connect(function(K)
+	if K == "l" then
+		venyx:toggle()
+	end
+end)
+
+local UpgradeToggle = section1:addToggle("Auto Ipgrade", nil, function(value)
+    Upgrade(value)
+end)
+
+local PrestigeToggle = section1:addToggle("Auto Prestige", nil, function(value)
+    Prestige(value)
+end)
+
+local MagnetToggle = section1:addToggle("Auto Collect Magnet", nil, function(value)
+    AutoMagnet = value
+end)
+
+local VirtualUser=game:service'VirtualUser'
+game:service'Players'.LocalPlayer.Idled:connect(function()
+	VirtualUser:CaptureController()
+	VirtualUser:ClickButton2(Vector2.new())
+end)
